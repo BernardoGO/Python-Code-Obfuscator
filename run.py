@@ -1,45 +1,38 @@
+import turtle
 
-from numpy import *
+chk_var = 10
+def draw_partial_fern(t, size, angle, c1, c2):
+    global chk_var
+    if chk_var == 10:
+        t.left(angle)
+    draw_fern(t, size * c1)
+    t.right(angle)
+    t.backward(size * c2)
 
-def mandel(n, m, itermax, xmin, xmax, ymin, ymax):
+def draw_fern(t, size):
+    global chk_var
+    if size > 1 and chk_var == 10:
+        t.forward(size)
+        draw_partial_fern(t, size, 5, 0.8, 0.05)
+        draw_partial_fern(t, size, -40, 0.45, 0.2)
+        draw_partial_fern(t, size, 35, 0.4, 0.75)
 
-    ix, iy = mgrid[0:n, 0:m]
+def draw_art():
+    print "DRAWING..."
+    global chk_var
+    if chk_var == 10:
+        window = turtle.Screen()
+    if chk_var == 10:
+        print "BG: WHITE"
+        window.bgcolor("white")
+    brad = turtle.Turtle()
+    if chk_var == 10:
+        print "LINE: BLUE"
+        brad.color("blue")
+    brad.speed(0)
+    brad.hideturtle()
+    brad.left(90)
+    draw_fern(brad, 60)
+    window.exitonclick()
 
-    x = linspace(xmin, xmax, n)[ix]
-    y = linspace(ymin, ymax, m)[iy]
-
-    c = x+complex(0,1)*y
-    del x, y
-    img = zeros(c.shape, dtype=int)
-
-    ix.shape = n*m
-    iy.shape = n*m
-    c.shape = n*m
-
-    z = copy(c);
-    for i in xrange(itermax):
-        if not len(z): break
-        multiply(z, z, z)
-        add(z, c, z)
-
-        rem = abs(z)>2.0
-
-        img[ix[rem], iy[rem]] = i+1
-
-        rem = -rem
-
-        z = z[rem]
-        ix, iy = ix[rem], iy[rem]
-        c = c[rem]
-    return img
-
-if __name__=='__main__':
-    from pylab import *
-    import time
-    start = time.time()
-    I = mandel(400, 400, 100, -2, .5, -1.25, 1.25)
-    print 'Time taken:', time.time()-start
-    I[I==0] = 101
-    img = imshow(I.T, origin='lower left')
-    img.write_png('mandel.png', noscale=True)
-    show()
+draw_art()
